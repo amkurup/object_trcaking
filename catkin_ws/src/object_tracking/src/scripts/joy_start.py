@@ -17,7 +17,7 @@ import roslaunch
 import sys
 import time
 import os
-import tracker_proto
+# import tracker_proto
 
 from   sensor_msgs.msg import Joy
 
@@ -41,7 +41,7 @@ class joy_control(object):
                     # "load" the tracking routine
                     package = 'object_tracking'
                     executable = 'tracker_proto.py'
-
+                    
                     # run the tracking routine
                     node = roslaunch.core.Node(package, executable)
                     launch = roslaunch.scriptapi.ROSLaunch()
@@ -52,22 +52,22 @@ class joy_control(object):
             # some code here..
             # some code here..
 
-                self.trigger = False
+            # self.trigger = False
             #rate.sleep()
 
     def joy_callback(self, data):
         # define joystick buttons
         x, circ, sq, tri, L1, R1, share, options, p4, L3, R3, DL, DR, DU, DD = data.buttons
         llr, lud, L2, rlr, rud, R2 = data.axes
-
+        
         # Start object tracking
-        if (circ == 1):
+        if (circ == 1) and (self.track_mode == 0):
             rospy.loginfo("Starting the object tracking routine...")
             self.trigger = True
             self.track_mode = 1
 
         # Stop tracking
-        if (x == 1):
+        if (x == 1) and (self.trigger == True):
             rospy.loginfo("Terminating the routine...")
             self.trigger = False
         
