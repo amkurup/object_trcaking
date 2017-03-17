@@ -19,8 +19,8 @@ class Tracker:
     def image_callback(self, msg):
         image = self.bridge.imgmsg_to_cv2(msg, desired_encoding="bgr8")
         hsv = cv2.cvtColor(image, cv2.COLOR_BGR2HSV)
-        pinkLower = np.array([130, 0, 0], np.uint8)
-        pinkUpper = np.array([175, 180, 180], np.uint8)
+        pinkLower = np.array([20, 100, 100], np.uint8)
+        pinkUpper = np.array([30, 255, 255], np.uint8)
         mask = cv2.inRange(hsv, pinkLower, pinkUpper)
         #mask = cv2.erode(mask, None, iterations=3)
         #mask = cv2.dilate(mask, None, iterations=6)
