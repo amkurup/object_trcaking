@@ -7,7 +7,20 @@ import argparse
 import numpy as np
 from   sensor_msgs.msg import Image
 from   collections     import deque
+from object_tracking.msg import location
 
+def talker():
+    pub = rospy.Publisher('custom_chatter', location, queue_size=10)
+    #rospy.init_node('custom_talker', anonymous=True)
+    #r = rospy.Rate(10) 
+    msg = location()
+    msg.x = dX
+    msg.y = dY
+
+    #while not rospy.is_shutdown():
+    rospy.loginfo(msg)
+    pub.publish(msg)
+	#r.sleep()
 
 counter = 0
 (dX, dY) = (0, 0)
@@ -59,6 +72,7 @@ class Tracker:
 	    if counter >= 10 and i == 1 and pts[-10] is not None:
 	        dX = pts[-10][0] - pts[i][0]
 	        dY = pts[-10][1] - pts[i][1]
+		talker()
 	        (dirX, dirY) = ("", "")
 	        if np.abs(dX) > 20:
 	            dirX = "East" if np.sign(dX) == 1 else "West"
