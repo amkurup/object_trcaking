@@ -10,17 +10,17 @@ from   collections     import deque
 from object_tracking.msg import position
 
 def talker():
-    pub = rospy.Publisher('custom_chatter', position, queue_size=10)
+    pub = rospy.Publisher('custom_chatter', position, queue_size=1)
     #rospy.init_node('custom_talker', anonymous=True)
-    #r = rospy.Rate(10) 
+    #r = rospy.Rate(30) 
     msg = position()
-    msg.x = x
-    msg.y = y
-    msg.radius = radius
+    msg.x = int(x)
+    msg.y = int(y)
+    msg.radius = int(radius)
     #while not rospy.is_shutdown():
     rospy.loginfo(msg)
     pub.publish(msg)
-	#r.sleep()
+    #r.sleep()
 
 counter = 0
 (dX, dY) = (0, 0)
@@ -71,7 +71,7 @@ class Tracker:
                     (0, 255, 255), 2)
 		cv2.circle(image, center, 5, (0, 0, 255), -1)
 		pts.appendleft(center)
-		talker()
+		#talker()
        	for i in np.arange(1, len(pts)):
 	    if pts[i - 1] is None or pts[i] is None:
 	        continue
@@ -95,6 +95,7 @@ class Tracker:
 
 	cv2.putText(image, direction, (10, 30), cv2.FONT_HERSHEY_SIMPLEX, 
 	    0.65, (0, 0, 255), 3)
+	talker()
 	cv2.putText(image, "x: {}, y: {}, rad: {}".format(int(x), int(y), int(radius)), 
             (10, image.shape[0] - 10), cv2.FONT_HERSHEY_SIMPLEX, 
             0.35, (0, 0, 255), 1)
