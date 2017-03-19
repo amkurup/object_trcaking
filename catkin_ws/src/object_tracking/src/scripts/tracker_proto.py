@@ -54,7 +54,7 @@ class Tracker:
         mask = cv2.erode(mask, None, iterations=3)
         mask = cv2.dilate(mask, None, iterations=6)
         masked = cv2.bitwise_and(image, image, mask=mask)
-        cv2.imshow("window1", image)
+        #cv2.imshow("window1", image)
         #cv2.imshow("window2", masked)
 
 	cnts = cv2.findContours(mask.copy(), cv2.RETR_EXTERNAL,
@@ -100,7 +100,7 @@ class Tracker:
             (10, image.shape[0] - 10), cv2.FONT_HERSHEY_SIMPLEX, 
             0.35, (0, 0, 255), 1)
 
-	cv2.imshow("window2", image)
+	#cv2.imshow("window2", image)
 
         cv2.waitKey(3)
 	counter += 1
