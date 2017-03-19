@@ -1,0 +1,7 @@
+<launch>
+  <node name="P_control" pkg="object_tracking" type="PI_tracker.py" output="screen" >
+    <param name="reference" value="0.0" />
+    <param name="P_ang" value="0.1" />
+  </node>
+
+</launch>

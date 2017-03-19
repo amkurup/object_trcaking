@@ -10,14 +10,16 @@ ang_control = 0.0
 
 def callback(data):
     global ang_control
-    reference = 0
-    P = 0.1
+    #reference = 0
+    #P = 0.001
+    reference = rospy.get_param("/P_control/reference") #needs a point and a size
+    P = rospy.get_param("/P_control/P_ang") #angular proportional controller
     ang_control = P*(reference - data.x)
     #rospy.loginfo('Recieved data: %s Ang-Control: %s', data.x, ang_control)
     #Define PI Controller here
 
 def position_sub():
-    rospy.Subscriber('tracked_pos', location, callback) #Detect position from OpenCV
+    rospy.Subscriber('custom_chatter', location, callback) #Detect position from OpenCV
 
 def jackal_move():
         global ang_control
