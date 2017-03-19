@@ -1,18 +1,33 @@
 #!/usr/bin/env python
 
+# publisher + subscriber that reads position msgs from
+# camera and calculates movement
+
+# Intro to Robotics - EE5900 - Spring 2017
+#          Assignment #6
+
+#       Project #6 Group #2
+#            prithvi
+#            Aswin
+#        Akhil (Team Lead)
+#
+# Revision: v1.2
+
+# define imports
 import rospy
 import cv2
 import cv_bridge
 import argparse
 import numpy as np
+
 from   sensor_msgs.msg import Image
 from   collections     import deque
-from object_tracking.msg import position
+from   object_tracking.msg import position
 
 def talker():
     pub = rospy.Publisher('custom_chatter', position, queue_size=1)
     #rospy.init_node('custom_talker', anonymous=True)
-    #r = rospy.Rate(30) 
+    #r = rospy.Rate(30)
     msg = position()
     msg.x = int(x)
     msg.y = int(y)
@@ -65,9 +80,9 @@ class Tracker:
 	    ((x, y), radius) = cv2.minEnclosingCircle(c)
 	    M = cv2.moments(c)
 	    center = (int(M["m10"] / M["m00"]), int(M["m01"] / M["m00"]))
-	    
+
 	    if radius > 10:
-		cv2.circle(image, (int(x), int(y)), int(radius), 
+		cv2.circle(image, (int(x), int(y)), int(radius),
                     (0, 255, 255), 2)
 		cv2.circle(image, center, 5, (0, 0, 255), -1)
 		pts.appendleft(center)
@@ -93,11 +108,11 @@ class Tracker:
 	    thickness = int(np.sqrt(32 / float(i + 1)) * 2.5)
 	    cv2.line(image, pts[i - 1], pts[i], (0, 0, 255), thickness)
 
-	cv2.putText(image, direction, (10, 30), cv2.FONT_HERSHEY_SIMPLEX, 
+	cv2.putText(image, direction, (10, 30), cv2.FONT_HERSHEY_SIMPLEX,
 	    0.65, (0, 0, 255), 3)
 	talker()
-	cv2.putText(image, "x: {}, y: {}, rad: {}".format(int(x), int(y), int(radius)), 
-            (10, image.shape[0] - 10), cv2.FONT_HERSHEY_SIMPLEX, 
+	cv2.putText(image, "x: {}, y: {}, rad: {}".format(int(x), int(y), int(radius)),
+            (10, image.shape[0] - 10), cv2.FONT_HERSHEY_SIMPLEX,
             0.35, (0, 0, 255), 1)
 
 	#cv2.imshow("window2", image)
