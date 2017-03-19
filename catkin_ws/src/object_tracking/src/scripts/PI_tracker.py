@@ -3,7 +3,7 @@ import rospy
 import std_msgs
 from geometry_msgs.msg import Twist
 from geometry_msgs.msg import Vector3
-from object_tracking.msg import location
+from object_tracking.msg import position
 
 global ang_control
 ang_control = 0.0
@@ -19,7 +19,7 @@ def callback(data):
     #Define PI Controller here
 
 def position_sub():
-    rospy.Subscriber('custom_chatter', location, callback) #Detect position from OpenCV
+    rospy.Subscriber('custom_chatter', position, callback) #Detect position from OpenCV
 
 def jackal_move():
         global ang_control
