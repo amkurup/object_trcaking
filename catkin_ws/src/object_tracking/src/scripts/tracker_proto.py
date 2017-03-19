@@ -95,7 +95,7 @@ class Tracker:
 
 	cv2.putText(image, direction, (10, 30), cv2.FONT_HERSHEY_SIMPLEX, 
 	    0.65, (0, 0, 255), 3)
-	cv2.putText(image, "dx: {}, dy: {}, rad: {}".format(dX, dY, radius), 
+	cv2.putText(image, "x: {}, y: {}, rad: {}".format(int(x), int(y), int(radius)), 
             (10, image.shape[0] - 10), cv2.FONT_HERSHEY_SIMPLEX, 
             0.35, (0, 0, 255), 1)
 
