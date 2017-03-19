@@ -33,8 +33,8 @@ y = 0
 class Tracker:
     def __init__(self):
         self.bridge = cv_bridge.CvBridge()
-        cv2.namedWindow("window1", 1)
-        cv2.namedWindow("window2", 1)
+        #cv2.namedWindow("window1", 1)
+        #cv2.namedWindow("window2", 1)
         self.image_sb = rospy.Subscriber('/usb_cam/image_raw', Image, self.image_callback)
 
     def image_callback(self, msg):
