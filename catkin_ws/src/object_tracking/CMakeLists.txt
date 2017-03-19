@@ -50,7 +50,7 @@ find_package(catkin REQUIRED COMPONENTS
 ## Generate messages in the 'msg' folder
 add_message_files(
   FILES
-  location.msg
+  position.msg
 )
 
 ## Generate services in the 'srv' folder
@@ -104,9 +104,9 @@ generate_messages(
 ## DEPENDS: system dependencies of this project that dependent projects also need
 catkin_package(
 #  INCLUDE_DIRS include
-  LIBRARIES object_tracking
+#  LIBRARIES object_tracking
   CATKIN_DEPENDS roscpp rospy std_msgs message_runtime
-  DEPENDS system_lib
+#  DEPENDS system_lib
 )
 
 ###########
