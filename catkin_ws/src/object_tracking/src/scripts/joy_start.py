@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 # Use joystick input to launch object-tracking nodes in jackal
-# 
+#
 # Intro to Robotics - EE5900 - Spring 2017
 #          Assignment #6
 #
@@ -23,55 +23,61 @@ from   sensor_msgs.msg import Joy
 
 # class to read joystick messages and launch node
 class joy_control(object):
+
     # define self routine
     def __init__(self):
+
         # define subscriber
         rospy.Subscriber("/bluetooth_teleop/joy", Joy, self.joy_callback)
         rate = rospy.Rate(5)
 
+        rospy.loginfo('started joystick routine..')
+
         # define and init variables
         self.trigger     = False
-        self.track_mode  = 0
         tracking_process = None
+
+        # "load" the tracking routine
+        package = 'object_tracking'
+        executable = 'test.py'
+        node = roslaunch.core.Node(package, executable)
 
         while not rospy.is_shutdown():
             # execute if triggered
             if (self.trigger == True):
-                if (self.track_mode == 1):
-                    # "load" the tracking routine
-                    package = 'object_tracking'
-                    executable = 'tracker_proto.py'
-                    
-                    # run the tracking routine
-                    node = roslaunch.core.Node(package, executable)
-                    launch = roslaunch.scriptapi.ROSLaunch()
-                    launch.start()
-                    tracking_process = launch.launch(node)
+                # run the tracking routine
+                launch = roslaunch.scriptapi.ROSLaunch()
+                launch.start()
+                tracking_process = launch.launch(node)
 
             # else:
             # some code here..
             # some code here..
 
-            # self.trigger = False
-            #rate.sleep()
+            # reset trigger
+            self.trigger = False
+            rate.sleep()
 
+
+    # joystick callback routine
     def joy_callback(self, data):
+
         # define joystick buttons
         x, circ, sq, tri, L1, R1, share, options, p4, L3, R3, DL, DR, DU, DD = data.buttons
         llr, lud, L2, rlr, rud, R2 = data.axes
-        
+
         # Start object tracking
-        if (circ == 1) and (self.track_mode == 0):
+        if (circ == 1) and (self.trigger == False):
             rospy.loginfo("Starting the object tracking routine...")
             self.trigger = True
-            self.track_mode = 1
 
         # Stop tracking
-        if (x == 1) and (self.trigger == True):
+        if (x == 1):
             rospy.loginfo("Terminating the routine...")
             self.trigger = False
-        
 
+
+# standard boilerplate
 if __name__ == "__main__":
     try:
         rospy.init_node("joy_start", anonymous=False)
