@@ -31,7 +31,10 @@ def talker():
     msg = position()
     msg.x = int(x)
     msg.y = int(y)
-    msg.radius = int(radius)
+    if int(radius) > 25:
+        msg.radius = int(radius)
+    else:
+        msg.radius = 50
     #while not rospy.is_shutdown():
     rospy.loginfo(msg)
     pub.publish(msg)
@@ -63,7 +66,7 @@ class Tracker:
 	global y
         image = self.bridge.imgmsg_to_cv2(msg, desired_encoding="bgr8")
         hsv = cv2.cvtColor(image, cv2.COLOR_BGR2HSV)
-        yellowLower = np.array([20, 100, 100], np.uint8)
+        yellowLower = np.array([20, 130, 130], np.uint8)
         yellowUpper = np.array([30, 255, 255], np.uint8)
         mask = cv2.inRange(hsv, yellowLower, yellowUpper)
         mask = cv2.erode(mask, None, iterations=3)
@@ -115,7 +118,7 @@ class Tracker:
             (10, image.shape[0] - 10), cv2.FONT_HERSHEY_SIMPLEX,
             0.35, (0, 0, 255), 1)
 
-	#cv2.imshow("window2", image)
+	cv2.imshow("window2", image)
 
         cv2.waitKey(3)
 	counter += 1

@@ -83,7 +83,7 @@ class Controller:
 
         #Implement controller saturation limits if needed using ROS params
         ang_control = P_ang*err_ang
-        lin_control = P_lin*err_lin
+        lin_control = 4*P_lin*err_lin
         rospy.loginfo('ref_pos: %s ref_size: %s err_lin: %s err_ang: %s', ref_pos, ref_size, err_lin, err_ang)
 
         #Publish Velocities
