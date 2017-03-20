@@ -118,7 +118,7 @@ class Tracker:
             (10, image.shape[0] - 10), cv2.FONT_HERSHEY_SIMPLEX,
             0.35, (0, 0, 255), 1)
 
-	cv2.imshow("window2", image)
+	#cv2.imshow("window2", image)
 
         cv2.waitKey(3)
 	counter += 1
