@@ -3,7 +3,7 @@
     <param name="ref_pos" value="320.0" />
     <param name="P_ang" value="0.001" />
     <param name="ref_size" value="50.0" />
-    <param name="P_lin" value="0.05" />
+    <param name="P_lin" value="0.01" />
     <param name="P_lin_hist" value="5" />
     <param name="P_lin_sat" value="0.5" />
     <param name="P_ang_hist" value="50" />
