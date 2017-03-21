@@ -10,6 +10,7 @@
 #              Aswin
 #         Akhil (Team Lead)
 #
+# version: v1.3
 
 # define imports
 import rospy
@@ -36,13 +37,8 @@ class joy_control(object):
         self.start = False
         self.stop  = False
 
-        # configure uuid as per roslaunch api
-        # uuid = roslaunch.rlutil.get_or_generate_uuid(None, False)
-        # roslaunch.configure_logging(uuid)
-        # # declare launch file
-        # launch = roslaunch.parent.ROSLaunchParent(uuid, ["/home/rsestudent/object_trcaking/catkin_ws/src/object_tracking/src/launch/object_tracking.launch"])
-
-        package = 'object_tracking'
+        # configure node roslaunch api
+        package    = 'object_tracking'
         executable = 'tracker_proto.py'
         node = roslaunch.core.Node(package, executable)
 
@@ -52,12 +48,10 @@ class joy_control(object):
                 launch = roslaunch.scriptapi.ROSLaunch()
                 launch.start()
                 process = launch.launch(node)
-                # launch.start()
 
             # if stop flag set: shutdown main launch-file
             if self.stop:
                 process.stop()
-                # launch.shutdown()
 
             # reset trigger
             self.start = False
