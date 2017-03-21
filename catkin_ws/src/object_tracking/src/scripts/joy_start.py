@@ -39,7 +39,7 @@ class joy_control(object):
 
         # "load" the tracking routine
         package = 'object_tracking'
-        executable = 'test.py'
+        executable = 'object_tracking.launch'
         node = roslaunch.core.Node(package, executable)
 
         while not rospy.is_shutdown():
