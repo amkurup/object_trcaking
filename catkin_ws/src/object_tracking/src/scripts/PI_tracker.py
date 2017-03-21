@@ -56,7 +56,10 @@ class Controller:
         ref_size = rospy.get_param("/P_control/ref_size")
         P_ang = rospy.get_param("/P_control/P_ang") #angular proportional controller
         P_lin = rospy.get_param("/P_control/P_lin") #linear proportional controller
-
+	P_lin_hist = rospy.get_param("/P_control/P_lin_hist") #Hysterisis for linear controller
+	P_ang_hist = rospy.get_param("/P_control/P_ang_hist") #Hysterisis for angular controller
+	P_lin_sat = rospy.get_param("/P_control/P_lin_sat") #Saturation value for linear controller
+	P_ang_sat = rospy.get_param("/P_control/P_ang_sat") #Saturation value for angular controller
         #Employ hysterisis for both controllers
         err_ang = ref_pos - data.x # 100 pix deadzone +-50 each side
         err_lin = ref_size - data.radius # <50 move forward, >70 move back
@@ -66,25 +69,38 @@ class Controller:
         rospy.loginfo('ref_pos: %s ref_size: %s err_lin: %s err_ang: %s data.x: %s data.radius: %s', ref_pos, ref_size, err_lin, err_ang, data.x, data.radius)
 
         #Angular control hysterisis
-        if err_ang < -50.00:
-            err_ang = err_ang + 50.00
-        elif err_ang > 50.00:
-            err_ang = err_ang - 50.00
+        if err_ang < (-1*P_ang_hist):
+            err_ang = err_ang + P_ang_hist
+        elif err_ang > P_ang_hist:
+            err_ang = err_ang - P_ang_hist
         else:
             err_ang = 0
 
         #Linear control hysterisis
-        if err_lin < -10.00:
-            err_lin = err_lin + 10.00
-        elif err_lin > 10.00:
-            err_lin = err_lin - 10.00
+        if err_lin < (-1*P_lin_hist):
+            err_lin = err_lin + P_lin_hist
+        elif err_lin > P_lin_hist:
+            err_lin = err_lin - P_lin_hist
         else:
             err_lin = 0
 
         #Implement controller saturation limits if needed using ROS params
-        ang_control = P_ang*err_ang
-        lin_control = 4*P_lin*err_lin
-        rospy.loginfo('ref_pos: %s ref_size: %s err_lin: %s err_ang: %s', ref_pos, ref_size, err_lin, err_ang)
+	if abs(P_ang*err_ang) < P_ang_sat:
+        	ang_control = P_ang*err_ang
+	elif err_ang < 0:
+		ang_control = -P_ang_sat
+	else:
+		ang_control = P_ang_sat
+
+	if abs(P_lin*err_lin) < P_lin_sat:
+        	lin_control = P_lin*err_lin
+	elif err_lin < 0:
+		lin_control = -P_lin_sat
+	else:
+		lin_control = P_lin_sat
+
+
+        rospy.loginfo('ref_pos: %s | ref_size: %s | err_lin: %s | err_ang: %s | lin_control: %s | ang_control: %s ', ref_pos, ref_size, err_lin, err_ang, lin_control, ang_control)
 
         #Publish Velocities
         linear  = Vector3(lin_control, 0.0, 0.0)
