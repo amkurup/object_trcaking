@@ -37,19 +37,27 @@ class joy_control(object):
         self.stop  = False
 
         # configure uuid as per roslaunch api
-        uuid = roslaunch.rlutil.get_or_generate_uuid(None, False)
-        roslaunch.configure_logging(uuid)
-        # declare launch file
-        launch = roslaunch.parent.ROSLaunchParent(uuid, ["/home/rsestudent/object_trcaking/catkin_ws/src/object_tracking/src/launch/object_tracking.launch"])
+        # uuid = roslaunch.rlutil.get_or_generate_uuid(None, False)
+        # roslaunch.configure_logging(uuid)
+        # # declare launch file
+        # launch = roslaunch.parent.ROSLaunchParent(uuid, ["/home/rsestudent/object_trcaking/catkin_ws/src/object_tracking/src/launch/object_tracking.launch"])
+
+        package = 'object_tracking'
+        executable = 'tracker_proto.py'
+        node = roslaunch.core.Node(package, executable)
 
         while not rospy.is_shutdown():
             # if start flag set: launch main launch-file
             if self.start:
+                launch = roslaunch.scriptapi.ROSLaunch()
                 launch.start()
+                process = launch.launch(node)
+                # launch.start()
 
             # if stop flag set: shutdown main launch-file
             if self.stop:
-                launch.shutdown()
+                process.stop()
+                # launch.shutdown()
 
             # reset trigger
             self.start = False
@@ -67,12 +75,13 @@ class joy_control(object):
         # Start object tracking
         if (circ == 1) and (self.start == False):
             rospy.loginfo("Starting the object tracking routine...")
+            # set the start flag
             self.start = True
 
         # Stop tracking
         if (x == 1):
-            rospy.loginfo("Terminating the routine...")
-            self.start = False
+            rospy.loginfo("Terminating the object tracking routine...")
+            # set stop flag
             self.stop  = True
 
 
