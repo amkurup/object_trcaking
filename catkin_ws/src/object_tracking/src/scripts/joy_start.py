@@ -38,17 +38,20 @@ class joy_control(object):
         tracking_process = None
 
         # "load" the tracking routine
-        package = 'object_tracking'
-        executable = 'object_tracking.launch'
-        node = roslaunch.core.Node(package, executable)
+        # package = 'object_tracking'
+        # executable = 'object_tracking.launch'
+        # node = roslaunch.core.Node(package, executable)
 
         while not rospy.is_shutdown():
             # execute if triggered
             if (self.trigger == True):
                 # run the tracking routine
-                launch = roslaunch.scriptapi.ROSLaunch()
+                uuid = roslaunch.rlutil.get_or_generate_uuid(None, False)
+                roslaunch.configure_logging(uuid)
+                # launch = roslaunch.scriptapi.ROSLaunch()
+                launch = roslaunch.parent.ROSLaunchParent(uuid, ["/home/rsestudent/object_trcaking/catkin_ws/src/object_tracking/src/launch/object_tracking.launch"])
                 launch.start()
-                tracking_process = launch.launch(node)
+                # tracking_process = launch.launch(node)
 
             # else:
             # some code here..
