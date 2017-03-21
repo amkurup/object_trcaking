@@ -38,7 +38,7 @@ def talker():
     msg.y = int(y)
     # radius of object is published to position.
     # The jackal stops if the radius is too small or too large(for safety).
-    if (int(radius) > 15) and (int(radius) < 180): 
+    if (int(radius) > 15) and (int(radius) < 180) and (int(x) < 610) and (int(x) > 30) and (int(y) < 450) and (int(y) > 30) : 
         msg.radius = int(radius)
     else:
         msg.radius = 60
