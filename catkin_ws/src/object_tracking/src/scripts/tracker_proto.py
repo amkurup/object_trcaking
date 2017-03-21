@@ -38,10 +38,10 @@ def talker():
     msg.y = int(y)
     # radius of object is published to position.
     # The jackal stops if the radius is too small or too large(for safety).
-    if (int(radius) > 15) and (int(radius) < 200): 
+    if (int(radius) > 15) and (int(radius) < 180) and (int(x) < 610) and (int(x) > 30) and (int(y) < 450) and (int(y) > 30) : 
         msg.radius = int(radius)
     else:
-        msg.radius = 50
+        msg.radius = 60
     # Tells rospy the name of the node.
     rospy.loginfo(msg)
     # Publishes x, y, and radius values to the topic.
@@ -86,18 +86,18 @@ class Tracker:
         hsv = cv2.cvtColor(image, cv2.COLOR_BGR2HSV)
         # Yellow threshold
         # Uncomment the following 3 lines to use yellow as the detector.
-        #yellowLower = np.array([20, 130, 130], np.uint8)
-        #yellowUpper = np.array([30, 255, 255], np.uint8)
-        #mask = cv2.inRange(hsv, yellowLower, yellowUpper)
+        yellowLower = np.array([20, 130, 130], np.uint8)
+        yellowUpper = np.array([30, 255, 255], np.uint8)
+        mask = cv2.inRange(hsv, yellowLower, yellowUpper)
 
 	# Blue threshold
         # Comment the following 3 lines if using yellow.
-	blueLower = np.array([110, 50, 50], np.uint8)
-        blueUpper = np.array([130, 255, 255], np.uint8)
+	#blueLower = np.array([110, 50, 50], np.uint8)
+        #blueUpper = np.array([130, 255, 255], np.uint8)
         
         # cv2.inRange in HSV color space leaves us with a binary mask
         # representing where in the image the desired color is found.
-        mask = cv2.inRange(hsv, blueLower, blueUpper)        
+        #mask = cv2.inRange(hsv, blueLower, blueUpper)        
         # A series of dilations and erosions to remove any small blobs left
         # in the mask.
         mask = cv2.erode(mask, None, iterations=3)
