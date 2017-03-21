@@ -34,31 +34,29 @@ class joy_control(object):
         rospy.loginfo('started joystick routine..')
 
         # define and init variables
-        self.trigger     = False
+        self.start       = False
+        self.stop        = False
         tracking_process = None
 
-        # "load" the tracking routine
-        # package = 'object_tracking'
-        # executable = 'object_tracking.launch'
-        # node = roslaunch.core.Node(package, executable)
+        # configure uuid as per roslaunch api
+        uuid = roslaunch.rlutil.get_or_generate_uuid(None, False)
+        roslaunch.configure_logging(uuid)
+        # declare launch file
+        launch = roslaunch.parent.ROSLaunchParent(uuid, ["/home/rsestudent/object_trcaking/catkin_ws/src/object_tracking/src/launch/object_tracking.launch"])
 
         while not rospy.is_shutdown():
             # execute if triggered
-            if (self.trigger == True):
+            if (self.start == True):
                 # run the tracking routine
-                uuid = roslaunch.rlutil.get_or_generate_uuid(None, False)
-                roslaunch.configure_logging(uuid)
-                # launch = roslaunch.scriptapi.ROSLaunch()
-                launch = roslaunch.parent.ROSLaunchParent(uuid, ["/home/rsestudent/object_trcaking/catkin_ws/src/object_tracking/src/launch/object_tracking.launch"])
                 launch.start()
-                # tracking_process = launch.launch(node)
 
-            # else:
-            # some code here..
-            # some code here..
+            if (self.stop == True):
+                # terminate the node
+                launch.shutdown()
 
             # reset trigger
-            self.trigger = False
+            self.start = False
+            self.stop = False
             rate.sleep()
 
 
@@ -70,14 +68,15 @@ class joy_control(object):
         llr, lud, L2, rlr, rud, R2 = data.axes
 
         # Start object tracking
-        if (circ == 1) and (self.trigger == False):
+        if (circ == 1) and (self.start == False):
             rospy.loginfo("Starting the object tracking routine...")
-            self.trigger = True
+            self.start = True
 
         # Stop tracking
         if (x == 1):
             rospy.loginfo("Terminating the routine...")
-            self.trigger = False
+            self.start = False
+            self.stop = True
 
 
 # standard boilerplate
