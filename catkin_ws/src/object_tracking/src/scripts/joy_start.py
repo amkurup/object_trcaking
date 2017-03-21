@@ -17,7 +17,6 @@ import roslaunch
 import sys
 import time
 import os
-# import tracker_proto
 
 from   sensor_msgs.msg import Joy
 
@@ -34,9 +33,8 @@ class joy_control(object):
         rospy.loginfo('started joystick routine..')
 
         # define and init variables
-        self.start       = False
-        self.stop        = False
-        tracking_process = None
+        self.start = False
+        self.stop  = False
 
         # configure uuid as per roslaunch api
         uuid = roslaunch.rlutil.get_or_generate_uuid(None, False)
@@ -45,18 +43,17 @@ class joy_control(object):
         launch = roslaunch.parent.ROSLaunchParent(uuid, ["/home/rsestudent/object_trcaking/catkin_ws/src/object_tracking/src/launch/object_tracking.launch"])
 
         while not rospy.is_shutdown():
-            # execute if triggered
-            if (self.start == True):
-                # run the tracking routine
+            # if start flag set: launch main launch-file
+            if self.start:
                 launch.start()
 
-            if (self.stop == True):
-                # terminate the node
+            # if stop flag set: shutdown main launch-file
+            if self.stop:
                 launch.shutdown()
 
             # reset trigger
             self.start = False
-            self.stop = False
+            self.stop  = False
             rate.sleep()
 
 
@@ -76,7 +73,7 @@ class joy_control(object):
         if (x == 1):
             rospy.loginfo("Terminating the routine...")
             self.start = False
-            self.stop = True
+            self.stop  = True
 
 
 # standard boilerplate
@@ -87,4 +84,3 @@ if __name__ == "__main__":
         run = joy_control()
     except rospy.ROSInterruptException:
         rospy.loginfo("joy_start node terminated.")
-
