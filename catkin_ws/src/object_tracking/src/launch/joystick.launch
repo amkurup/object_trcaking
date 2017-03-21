@@ -1,5 +1,4 @@
 <launch>
-  <!-- <include file="$(find object_tracking)/launch/ <camera> .launch" /> -->
 
   <node pkg="object_tracking" name="joy_start"  type="joy_start.py" output="screen" required="true" />
 
