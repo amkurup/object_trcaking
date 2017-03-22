@@ -1,11 +1,14 @@
-# Readme file for EE5900 project_6
+# Readme file for EE5900 project 6 group 2
 
 ### Group
 [Akhil](mailto:amkurup@mtu.edu) (team lead)
+
 [Prithvi](mailto:pkambham@mtu.edu)
+
 [Aswin](mailto:ajayapra@mtu.edu)
 
 
+## Instructions
 This document describes how to download the package and use it. For details on the algorithm please refer to the [wiki](https://github.com/amkurup/object_trcaking/wiki)
 
 
