@@ -1,6 +1,7 @@
 # Readme file for EE5900 project 6 group 2
 
-### Group
+
+## Group
 [Akhil](mailto:amkurup@mtu.edu) (team lead)
 
 [Prithvi](mailto:pkambham@mtu.edu)
@@ -46,6 +47,4 @@ $ roslaunch object_tracking joystick.launch
 ```
 (All other launch files are for individual modules and need not be used! They were/will be used for debugging or testing individual modules)
 
-7. To start the tracking code, press the circle on the joystick. You should be able to press the X on the joystick and stop the tracking at any point in time and restart it using the circle.
-
-
+7. To start the tracking code, press the circle on the joystick. Pressing X should stop the tracking and circle should restart it.
